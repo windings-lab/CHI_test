@@ -3,14 +3,21 @@ from pathlib import Path
 import hishel
 import httpx
 
-from settings import root_folder
+from settings import ROOT_FOLDER, URL, API_KEY
 
-
-cache_folder = root_folder / Path("cache")
-cache_folder.mkdir(parents=True, exist_ok=True)
-storage = hishel.AsyncFileStorage(serializer=hishel.JSONSerializer(), base_path=root_folder / Path("cache"))
+storage = hishel.AsyncFileStorage(
+    serializer=hishel.JSONSerializer(),
+    base_path=ROOT_FOLDER / Path("cache"),
+    ttl=3600 * 24,
+)
 
 controller = hishel.Controller(force_cache=True)
 
 cache_transport = hishel.AsyncCacheTransport(transport=httpx.AsyncHTTPTransport(), storage=storage, controller=controller)
-client = httpx.AsyncClient(transport=cache_transport)
+
+def client() -> httpx.AsyncClient:
+    return httpx.AsyncClient(
+        base_url=URL,
+        transport=cache_transport,
+        params={"appid": API_KEY}
+    )

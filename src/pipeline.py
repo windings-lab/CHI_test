@@ -3,7 +3,7 @@ from datetime import date
 
 from src.city import City
 from src.http_client import client
-from src.settings import RAW_DATA_FOLDER, URL
+from src.settings import RAW_DATA_FOLDER, API_URL
 from src.util import ensure_folder
 
 
@@ -16,7 +16,7 @@ class Pipeline:
         response_file.write_text(json.dumps(city_forecast_data, indent=4))
 
     async def _load_geolocation(self, city: str = "Kyiv"):
-        url = f"{URL}/geo/1.0/direct"
+        url = f"{API_URL}/geo/1.0/direct"
         params = {
             "q": city,
         }
@@ -26,7 +26,7 @@ class Pipeline:
         return response.json()
 
     async def _load_forecast(self, city: City):
-        url = f"{URL}/data/2.5/forecast"
+        url = f"{API_URL}/data/2.5/forecast"
         params = {
             "lat": city.lat,
             "lon": city.lon,

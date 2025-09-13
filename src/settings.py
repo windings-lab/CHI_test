@@ -10,4 +10,4 @@ DATA_FOLDER = ROOT_FOLDER / Path("data")
 RAW_DATA_FOLDER = DATA_FOLDER / Path("raw")
 
 API_KEY = os.getenv("API_KEY")
-URL = r"https://api.openweathermap.org"
+API_URL = r"https://api.openweathermap.org"

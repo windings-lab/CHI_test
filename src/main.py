@@ -1,10 +1,10 @@
 import asyncio
 
-from pipeline import Pipeline
+from data_pipeline import DataPipeline
 
 
 async def main():
-    pipeline = Pipeline()
+    pipeline = DataPipeline()
     await pipeline.acquire()
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ from src.settings import RAW_DATA_FOLDER, API_URL
 from src.util import ensure_folder
 
 
-class Pipeline:
+class DataPipeline:
     async def acquire(self):
         geo_data = await self._load_geolocation()
         city = City.from_dict(geo_data[0])

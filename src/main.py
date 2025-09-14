@@ -1,11 +1,9 @@
-import asyncio
-
-from data_pipeline import DataPipeline
+from src.data.pipeline import DataPipeline
 
 
-async def main():
+def main():
     pipeline = DataPipeline()
-    await pipeline.acquire()
+    pipeline.acquire()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

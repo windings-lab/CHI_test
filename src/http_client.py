@@ -5,7 +5,7 @@ import httpx
 
 from settings import ROOT_FOLDER, API_URL, API_KEY
 
-storage = hishel.AsyncFileStorage(
+storage = hishel.FileStorage(
     serializer=hishel.JSONSerializer(),
     base_path=ROOT_FOLDER / Path("cache"),
     ttl=3600 * 24,
@@ -13,10 +13,10 @@ storage = hishel.AsyncFileStorage(
 
 controller = hishel.Controller(force_cache=True)
 
-cache_transport = hishel.AsyncCacheTransport(transport=httpx.AsyncHTTPTransport(), storage=storage, controller=controller)
+cache_transport = hishel.CacheTransport(transport=httpx.HTTPTransport(), storage=storage, controller=controller)
 
-def client() -> httpx.AsyncClient:
-    return httpx.AsyncClient(
+def client() -> httpx.Client:
+    return httpx.Client(
         base_url=API_URL,
         transport=cache_transport,
         params={"appid": API_KEY}

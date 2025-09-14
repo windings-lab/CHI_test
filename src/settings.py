@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from src.util import ensure_folder
+from util import ensure_folder
 
 
 ROOT_FOLDER = Path(__file__).parent.parent

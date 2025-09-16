@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, sessionmaker
 from sqlalchemy.orm import mapped_column
 
-from settings import (
+from src.settings import (
     ROOT_FOLDER, 
     DATABASE_TYPE, 
     POSTGRES_HOST, 

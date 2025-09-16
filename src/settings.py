@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-from util import ensure_folder
+from src.util import ensure_folder
 
 # Load environment variables from .env file
 ROOT_FOLDER = Path(__file__).parent.parent

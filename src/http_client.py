@@ -3,7 +3,7 @@ from pathlib import Path
 import hishel
 import httpx
 
-from settings import ROOT_FOLDER, API_URL, API_KEY
+from src.settings import ROOT_FOLDER, API_URL, API_KEY
 
 storage = hishel.FileStorage(
     serializer=hishel.JSONSerializer(),

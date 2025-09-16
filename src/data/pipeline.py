@@ -7,8 +7,8 @@ from ..util import create_folder_and_append_today
 
 
 class DataPipeline:
-    def acquire(self):
-        geo_data = self._load_geolocation()
+    def acquire(self, city: str = "Kyiv"):
+        geo_data = self._load_geolocation(city)
         geo_data = geo_data[0]
         lat, lon = geo_data["lat"], geo_data["lon"]
         city_forecast_data = self._load_forecast(lat, lon)
@@ -52,7 +52,7 @@ class DataPipeline:
         return result
 
 
-    def _load_geolocation(self, city: str = "Kyiv"):
+    def _load_geolocation(self, city):
         url = f"{API_URL}/geo/1.0/direct"
         params = {
             "q": city,

@@ -91,16 +91,7 @@ This project uses `uv` for dependency management. To initialize and run the proj
 
 5. Run the application:
    ```bash
-   uv run python src/main.py
-   ```
-
-   **Or run with Prefect (recommended):**
-   ```bash
-   # Run the Prefect flow directly
-   uv run python src/prefect_flow.py
-   
-   # Or run through main.py (uses Prefect internally)
-   uv run python src/main.py
+   uv run python -m src.main
    ```
 
 6. **Results Storage:**
@@ -158,7 +149,7 @@ This project uses **Prefect** for workflow orchestration, providing:
 **Option 1: Run Flow Directly (Recommended for Development)**
 ```bash
 # Run the flow directly with all Prefect features
-uv run python src/main.py
+uv run python -m src.main
 ```
 
 **Option 2: Full Server + Worker + Deployment Setup**
@@ -170,9 +161,22 @@ uv run prefect server start
 ```
 
 **Step 2: Start Worker (in new terminal)**
-```bash
-# Set API URL and start worker
+
+**On Windows (Command Prompt):**
+```cmd
 set PREFECT_API_URL=http://127.0.0.1:4200/api
+uv run prefect worker start --pool "local-process-pool"
+```
+
+**On Windows (PowerShell):**
+```powershell
+$env:PREFECT_API_URL="http://127.0.0.1:4200/api"
+uv run prefect worker start --pool "local-process-pool"
+```
+
+**On Linux/macOS:**
+```bash
+export PREFECT_API_URL=http://127.0.0.1:4200/api
 uv run prefect worker start --pool "local-process-pool"
 ```
 

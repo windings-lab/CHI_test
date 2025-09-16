@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import create_engine, String, DateTime, Float, Integer
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import Mapped, sessionmaker
 from sqlalchemy.orm import mapped_column
 
 from settings import ROOT_FOLDER
@@ -23,3 +23,5 @@ class Forecast(Base):
 
 # Create an engine and a session
 engine = create_engine(f'sqlite:///{ROOT_FOLDER / "data.db"}')
+Session = sessionmaker(bind=engine)
+session = Session()

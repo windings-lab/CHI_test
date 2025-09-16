@@ -1,0 +1,51 @@
+# Prefect ignore file
+# Files and directories to ignore when deploying flows
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Data files (exclude from deployment)
+data/
+cache/
+*.db
+*.sqlite
+
+# Documentation
+docs/
+*.md
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Environment files
+.env
+.env.local
+.env.*.local

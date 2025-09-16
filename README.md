@@ -94,6 +94,15 @@ This project uses `uv` for dependency management. To initialize and run the proj
    uv run python src/main.py
    ```
 
+   **Or run with Prefect (recommended):**
+   ```bash
+   # Run the Prefect flow directly
+   uv run python src/prefect_flow.py
+   
+   # Or run through main.py (uses Prefect internally)
+   uv run python src/main.py
+   ```
+
 6. **Results Storage:**
    The application stores results in two locations:
    - **Data folder**: Processed data files are saved in the `data/` directory
@@ -131,6 +140,94 @@ The following screenshots demonstrate that the program works correctly:
 *Weather forecast data stored in the database with proper schema and relationships*
 
 </details>
+
+## Prefect Workflow Orchestration
+
+This project uses **Prefect** for workflow orchestration, providing:
+
+### Features
+- **Task Caching**: API calls are cached for 1 hour to avoid redundant requests
+- **Retry Logic**: Automatic retries with exponential backoff for failed tasks
+- **Error Handling**: Comprehensive error handling and logging
+- **Monitoring**: Built-in flow monitoring and observability
+- **Manual Execution**: On-demand flow execution with visual graph
+- **City-Specific Tasks**: Clear task identification in the flow graph
+
+### Prefect Commands
+
+**Option 1: Run Flow Directly (Recommended for Development)**
+```bash
+# Run the flow directly with all Prefect features
+uv run python src/main.py
+```
+
+**Option 2: Full Server + Worker + Deployment Setup**
+
+**Step 1: Start Prefect Server**
+```bash
+# Start Prefect server (keep this running)
+uv run prefect server start
+```
+
+**Step 2: Start Worker (in new terminal)**
+```bash
+# Set API URL and start worker
+set PREFECT_API_URL=http://127.0.0.1:4200/api
+uv run prefect worker start --pool "local-process-pool"
+```
+
+**Step 3: Deploy Flows**
+```bash
+# Deploy flows using prefect.yaml configuration
+uv run prefect deploy --all
+```
+
+**Step 4: Run Deployed Flows**
+```bash
+# Run manual deployment
+uv run prefect deployment run "weather-data-pipeline/weather-pipeline-manual"
+```
+
+**Monitor Flows:**
+```bash
+# View flow runs
+uv run prefect flow-run ls
+
+# View specific flow run details
+uv run prefect flow-run inspect <flow-run-id>
+
+# Access Prefect UI
+# Go to http://localhost:4200
+```
+
+### Workflow Structure
+
+The Prefect workflow consists of these tasks:
+
+1. **`acquire_weather_data`** - Fetches weather data from OpenWeatherMap API
+   - Cached for 1 hour to avoid redundant API calls
+   - 3 retries with 60-second delays
+   
+2. **`process_weather_data`** - Processes raw API data into structured format
+   - Converts timestamps to datetime objects
+   - Handles data cleaning and transformation
+   
+3. **`save_to_database`** - Saves processed data to database
+   - Supports both SQLite and PostgreSQL
+   - Handles duplicate detection
+   
+4. **`generate_analysis_report`** - Creates analysis reports
+   - Calculates average temperatures
+   - Generates city-specific statistics
+
+### Flow Configuration
+
+The workflow is configured in `prefect.yaml` with:
+- **Manual execution**: On-demand only
+- **Error handling**: Automatic retries and logging
+- **Caching**: 1-hour cache for API calls
+- **City-specific task names**: Easy identification in the flow graph
+- **Database flexibility**: Uses environment variables to determine database type
 
 ## Database Setup
 

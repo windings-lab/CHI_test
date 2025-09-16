@@ -1,0 +1,14 @@
+# Prefect configuration file
+name: chi-test-weather-pipeline
+prefect-version: 2.16.0
+
+# Deployments
+deployments:
+  - name: weather-pipeline-manual
+    entrypoint: src/prefect_flow.py:weather_pipeline
+    parameters:
+      cities: ["Kyiv", "London", "New York", "Paris", "Rome", "Seoul", "Tokyo"]
+    tags:
+      - weather
+      - data-pipeline
+      - manual

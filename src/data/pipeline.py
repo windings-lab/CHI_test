@@ -1,9 +1,9 @@
 import json
-from datetime import date
+import pandas as pd
 
 from ..http_client import client
-from ..settings import RAW_DATA_FOLDER, API_URL
-from ..util import ensure_folder
+from ..settings import RAW_DATA_FOLDER, API_URL, PROCESSED_DATA_FOLDER
+from ..util import create_folder_and_append_today
 
 
 class DataPipeline:
@@ -13,10 +13,44 @@ class DataPipeline:
         lat, lon = geo_data["lat"], geo_data["lon"]
         city_forecast_data = self._load_forecast(lat, lon)
 
-        response_file = self._get_raw_data_folder() / "response.json"
+        response_file = create_folder_and_append_today(RAW_DATA_FOLDER) / "response.json"
         response_file.write_text(json.dumps(city_forecast_data, indent=4))
 
         return city_forecast_data
+
+    def process(self, raw_data: dict):
+        list_of_forecasts = raw_data["list"]
+        city = raw_data["city"]["name"]
+
+        if city == 'Pushcha-Vodytsya':
+            city = 'Kyiv'
+
+        result = []
+
+        for forecast in list_of_forecasts:
+            main: dict = forecast["main"]
+            del main["feels_like"]
+            del main["temp_min"]
+            del main["temp_max"]
+            del main["temp_kf"]
+            main["date"] = forecast["dt"]
+            main["temperature"] = main.pop("temp")
+            main["ground_level"] = main.pop("grnd_level")
+            main["city"] = city
+
+            result.append(main)
+
+        data_file = create_folder_and_append_today(PROCESSED_DATA_FOLDER) / "data.parquet"
+        df = pd.DataFrame(result)
+
+        cols = ["city", "date"] + [c for c in df.columns if c not in ["city", "date"]]
+        df = df[cols]
+        df["date"] = pd.to_datetime(df["date"], unit="s")
+
+        df.to_parquet(data_file)
+
+        return result
+
 
     def _load_geolocation(self, city: str = "Kyiv"):
         url = f"{API_URL}/geo/1.0/direct"
@@ -40,7 +74,3 @@ class DataPipeline:
             response = cl.get(url, params=params)
 
         return response.json()
-
-    def _get_raw_data_folder(self):
-        today = date.today().isoformat()
-        return ensure_folder(RAW_DATA_FOLDER / today)

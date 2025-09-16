@@ -1,10 +1,14 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 from util import ensure_folder
 
-
+# Load environment variables from .env file
 ROOT_FOLDER = Path(__file__).parent.parent
+if not load_dotenv(ROOT_FOLDER / ".env"):
+    print("No .env file found, using default values")
+
 CACHE_FOLDER = ensure_folder(ROOT_FOLDER / Path("cache"))
 DATA_FOLDER = ROOT_FOLDER / Path("data")
 

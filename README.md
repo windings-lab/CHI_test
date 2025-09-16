@@ -11,12 +11,41 @@ This project uses `uv` for dependency management. To initialize and run the proj
    uv sync
    ```
 
-2. Run database migrations (required before first run):
+2. Get your OpenWeatherMap API key:
+   - Go to [OpenWeatherMap API](https://openweathermap.org/api)
+   - Sign up for a free account
+   - Navigate to your API keys section
+   - Copy your API key
+
+3. Create a `.env` file with your configuration:
+   ```bash
+   # Create .env file
+   touch .env
+   ```
+   
+   Edit the `.env` file to set your API key and database preferences:
+   ```
+   # API Configuration
+   API_KEY=your_actual_api_key_from_openweathermap
+   
+   # Database Configuration
+   # Set to 'sqlite' for SQLite or 'postgres' for PostgreSQL
+   DATABASE_TYPE=sqlite
+   
+   # PostgreSQL Configuration (only used when DATABASE_TYPE=postgres)
+   POSTGRES_HOST=localhost
+   POSTGRES_PORT=5432
+   POSTGRES_DB=db
+   POSTGRES_USER=gaster
+   POSTGRES_PASSWORD=admin
+   ```
+
+4. Run database migrations (required before first run):
    ```bash
    uv run alembic upgrade head
    ```
 
-3. Run the application:
+5. Run the application:
    ```bash
    uv run python src/main.py
    ```

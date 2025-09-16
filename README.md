@@ -2,6 +2,44 @@
 
 A weather data processing application that supports both SQLite and PostgreSQL databases.
 
+## API Used
+
+This application uses the **OpenWeatherMap API** to fetch weather forecast data:
+- **Geolocation API**: `/geo/1.0/direct` - Get coordinates for city names
+- **5-Day Weather Forecast API**: `/data/2.5/forecast` - Get 5-day weather forecast data
+- **API Documentation**: [OpenWeatherMap API Docs](https://openweathermap.org/api)
+
+## Fields Selected and Processed
+
+The application processes the following weather data fields from the OpenWeatherMap API:
+
+### Raw API Fields (from `main` object):
+- `temp` → `temperature` (renamed)
+- `pressure` (atmospheric pressure)
+- `sea_level` (sea level pressure)
+- `grnd_level` → `ground_level` (renamed)
+- `humidity` (relative humidity percentage)
+- `dt` → `date` (timestamp converted to datetime)
+
+### Fields Excluded:
+- `feels_like` (removed during processing)
+- `temp_min` (removed during processing)
+- `temp_max` (removed during processing)
+- `temp_kf` (removed during processing)
+
+### Additional Fields Added:
+- `city` (city name from geolocation data)
+
+### Final Database Schema:
+- `id` (primary key, auto-generated)
+- `city` (string, 40 characters)
+- `date` (datetime)
+- `temperature` (float, in Celsius)
+- `pressure` (integer, atmospheric pressure in hPa)
+- `sea_level` (integer, sea level pressure in hPa)
+- `humidity` (integer, relative humidity %)
+- `ground_level` (integer, ground level pressure in hPa)
+
 ## Project Initialization
 
 This project uses `uv` for dependency management. To initialize and run the project:
@@ -65,6 +103,34 @@ This project uses `uv` for dependency management. To initialize and run the proj
    - **Database**: Weather forecast data is stored in the configured database
      - SQLite: `data.db` file
      - PostgreSQL: `forecast` table in the configured database
+
+## Program Demonstration
+
+The following screenshots demonstrate that the program works correctly:
+
+<details>
+<summary><b>Raw API Responses and Generated Reports</b></summary>
+
+![API Responses and Reports](docs/responses_and_reports.png)
+*Raw API responses stored in JSON format and generated analysis reports*
+
+</details>
+
+<details>
+<summary><b>Processed Data in Parquet Format</b></summary>
+
+![Processed Data](docs/parquet.png)
+*Weather forecast data processed and stored in efficient Parquet format*
+
+</details>
+
+<details>
+<summary><b>Database Storage</b></summary>
+
+![Database Storage](docs/database.png)
+*Weather forecast data stored in the database with proper schema and relationships*
+
+</details>
 
 ## Database Setup
 

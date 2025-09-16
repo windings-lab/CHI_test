@@ -4,6 +4,7 @@ import pandas as pd
 from ..http_client import client
 from ..settings import RAW_DATA_FOLDER, API_URL, PROCESSED_DATA_FOLDER
 from ..util import create_folder_and_append_today
+from ..db import engine
 
 
 class DataPipeline:
@@ -49,8 +50,14 @@ class DataPipeline:
 
         df.to_parquet(data_file)
 
-        return result
+        return df
 
+    def save_to_database(self, df: pd.DataFrame):
+        df.to_sql(
+            "forecast",
+            con=engine,
+            if_exists="replace",
+        )
 
     def _load_geolocation(self, city):
         url = f"{API_URL}/geo/1.0/direct"

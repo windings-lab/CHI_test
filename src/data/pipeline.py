@@ -3,9 +3,8 @@ import pandas as pd
 
 from sqlalchemy import select, func
 
-from settings import REPORT_FOLDER
 from ..http_client import client
-from ..settings import RAW_DATA_FOLDER, API_URL, PROCESSED_DATA_FOLDER
+from ..settings import RAW_DATA_FOLDER, API_URL, PROCESSED_DATA_FOLDER, REPORT_FOLDER
 from ..util import create_folder_and_append_today
 from ..db import engine, session, Forecast
 

@@ -16,10 +16,16 @@ This project uses `uv` for dependency management. To initialize and run the proj
    - Sign up for a free account
    - Navigate to your API keys section
    - Copy your API key
-
+<br><br>
 3. Create a `.env` file with your configuration:
+   
+   **On Windows (PowerShell):**
+   ```powershell
+   New-Item -Path .env -ItemType File
+   ```
+   
+   **On macOS/Linux:**
    ```bash
-   # Create .env file
    touch .env
    ```
    
@@ -49,6 +55,16 @@ This project uses `uv` for dependency management. To initialize and run the proj
    ```bash
    uv run python src/main.py
    ```
+
+6. **Results Storage:**
+   The application stores results in two locations:
+   - **Data folder**: Processed data files are saved in the `data/` directory
+     - `data/raw/` - Raw API responses
+     - `data/processed/` - Processed data files (Parquet format)
+     - `data/reports/` - Generated reports
+   - **Database**: Weather forecast data is stored in the configured database
+     - SQLite: `data.db` file
+     - PostgreSQL: `forecast` table in the configured database
 
 ## Database Setup
 

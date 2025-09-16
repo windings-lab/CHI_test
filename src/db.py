@@ -5,7 +5,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, sessionmaker
 from sqlalchemy.orm import mapped_column
 
-from settings import ROOT_FOLDER
+from settings import (
+    ROOT_FOLDER, 
+    DATABASE_TYPE, 
+    POSTGRES_HOST, 
+    POSTGRES_PORT, 
+    POSTGRES_DB, 
+    POSTGRES_USER, 
+    POSTGRES_PASSWORD
+)
 
 Base = declarative_base()
 
@@ -21,7 +29,14 @@ class Forecast(Base):
     humidity: Mapped[int] = mapped_column(Integer)
     ground_level: Mapped[int] = mapped_column(Integer)
 
+# Create database URL based on database type
+def get_database_url():
+    if DATABASE_TYPE == "postgres":
+        return f"postgresql+psycopg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+    else:
+        return f'sqlite:///{ROOT_FOLDER / "data.db"}'
+
 # Create an engine and a session
-engine = create_engine(f'sqlite:///{ROOT_FOLDER / "data.db"}')
+engine = create_engine(get_database_url())
 Session = sessionmaker(bind=engine)
 session = Session()

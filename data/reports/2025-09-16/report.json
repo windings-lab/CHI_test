@@ -2,12 +2,12 @@
     "average_temperature_overall": 21.21,
     "unique_cities_count": 7,
     "average_temperature_per_city": {
+        "Rome": 23.79,
+        "New York": 20.27,
+        "Marunouchi": 28.96,
         "Kyiv": 21.67,
         "London": 15.79,
-        "Marunouchi": 28.96,
-        "New York": 20.27,
         "Palais-Royal": 15.78,
-        "Rome": 23.79,
         "Seoul": 22.22
     }
 }

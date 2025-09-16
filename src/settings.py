@@ -14,3 +14,11 @@ REPORT_FOLDER = DATA_FOLDER / Path("reports")
 
 API_KEY = os.getenv("API_KEY")
 API_URL = r"https://api.openweathermap.org"
+
+# Database configuration
+DATABASE_TYPE = os.getenv("DATABASE_TYPE", "sqlite")  # sqlite or postgres
+POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
+POSTGRES_DB = os.getenv("POSTGRES_DB", "db")
+POSTGRES_USER = os.getenv("POSTGRES_USER", "gaster")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "admin")
